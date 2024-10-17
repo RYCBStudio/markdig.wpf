@@ -25,7 +25,7 @@ namespace Markdig.Renderers
     /// <seealso cref="RendererBase" />
     public class WpfRenderer : RendererBase
     {
-        private readonly Stack<IAddChild> stack = new Stack<IAddChild>();
+        private readonly Stack<IAddChild> stack = new();
         private char[] buffer;
 
         public WpfRenderer()

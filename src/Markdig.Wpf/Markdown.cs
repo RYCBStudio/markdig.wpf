@@ -25,7 +25,7 @@ namespace Markdig.Wpf
         public static FlowDocument ToFlowDocument(string markdown, MarkdownPipeline? pipeline = null, WpfRenderer? renderer = null)
         {
             if (markdown == null) throw new ArgumentNullException(nameof(markdown));
-            pipeline = pipeline ?? new MarkdownPipelineBuilder().Build();
+            pipeline ??= new MarkdownPipelineBuilder().Build();
 
             // We override the renderer with our own writer
             var result = new FlowDocument();
@@ -53,11 +53,9 @@ namespace Markdig.Wpf
         public static string ToXaml(string markdown, MarkdownPipeline? pipeline = null)
         {
             if (markdown == null) throw new ArgumentNullException(nameof(markdown));
-            using (var writer = new StringWriter())
-            {
-                ToXaml(markdown, writer, pipeline);
-                return writer.ToString();
-            }
+            using var writer = new StringWriter();
+            ToXaml(markdown, writer, pipeline);
+            return writer.ToString();
         }
 
         /// <summary>
@@ -72,7 +70,7 @@ namespace Markdig.Wpf
         {
             if (markdown == null) throw new ArgumentNullException(nameof(markdown));
             if (writer == null) throw new ArgumentNullException(nameof(writer));
-            pipeline = pipeline ?? new MarkdownPipelineBuilder().Build();
+            pipeline ??= new MarkdownPipelineBuilder().Build();
 
             // We override the renderer with our own writer
             var renderer = new XamlRenderer(writer);

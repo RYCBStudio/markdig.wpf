@@ -45,8 +45,8 @@ namespace Markdig.Wpf
         /// </summary>
         public FlowDocument? Document
         {
-            get { return (FlowDocument)GetValue(DocumentProperty); }
-            protected set { SetValue(DocumentPropertyKey, value); }
+            get => (FlowDocument)GetValue(DocumentProperty);
+            protected set => SetValue(DocumentPropertyKey, value);
         }
 
         /// <summary>
@@ -54,8 +54,8 @@ namespace Markdig.Wpf
         /// </summary>
         public string? Markdown
         {
-            get { return (string)GetValue(MarkdownProperty); }
-            set { SetValue(MarkdownProperty, value); }
+            get => (string)GetValue(MarkdownProperty);
+            set => SetValue(MarkdownProperty, value);
         }
 
         /// <summary>
@@ -63,8 +63,8 @@ namespace Markdig.Wpf
         /// </summary>
         public MarkdownPipeline Pipeline
         {
-            get { return (MarkdownPipeline)GetValue(PipelineProperty); }
-            set { SetValue(PipelineProperty, value); }
+            get => (MarkdownPipeline)GetValue(PipelineProperty);
+            set => SetValue(PipelineProperty, value);
         }
 
         private static void MarkdownChanged(object sender, DependencyPropertyChangedEventArgs e)
