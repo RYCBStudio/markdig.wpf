@@ -27,7 +27,6 @@ namespace Markdig.Renderers.Wpf.Inlines
             switch (obj.DelimiterChar)
             {
                 case '*':
-                case '_':
                     span = obj.DelimiterCount == 2 ? (Span)new Bold() : new Italic();
                     break;
                 case '~':

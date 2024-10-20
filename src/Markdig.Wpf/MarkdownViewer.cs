@@ -2,6 +2,7 @@
 // This file is licensed under the MIT license.
 // See the LICENSE.md file in the project root for more information.
 
+using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
@@ -24,13 +25,19 @@ namespace Markdig.Wpf
         public static readonly DependencyProperty DocumentProperty = DocumentPropertyKey.DependencyProperty;
 
         /// <summary>
+        /// Defines the <see cref="Theme"/> property.
+        /// </summary>
+        public static readonly DependencyProperty ThemeProperty = 
+            DependencyProperty.Register(nameof(Theme), typeof(MarkdownViewerTheme), typeof(MarkdownViewer), new PropertyMetadata(ThemeChanged));
+
+        /// <summary>
         /// Defines the <see cref="Markdown"/> property.
         /// </summary>
         public static readonly DependencyProperty MarkdownProperty =
             DependencyProperty.Register(nameof(Markdown), typeof(string), typeof(MarkdownViewer), new FrameworkPropertyMetadata(MarkdownChanged));
 
         /// <summary>
-        /// Defines the <see cref="Markdown"/> property.
+        /// Defines the <see cref="Pipeline"/> property.
         /// </summary>
         public static readonly DependencyProperty PipelineProperty =
             DependencyProperty.Register(nameof(Pipeline), typeof(MarkdownPipeline), typeof(MarkdownViewer), new FrameworkPropertyMetadata(PipelineChanged));
@@ -38,6 +45,31 @@ namespace Markdig.Wpf
         static MarkdownViewer()
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(MarkdownViewer), new FrameworkPropertyMetadata(typeof(MarkdownViewer)));
+        }
+
+        public static void SetTheme(MarkdownViewerTheme theme, FrameworkElement element)
+        {
+            switch (theme)
+            {
+                case MarkdownViewerTheme.Light:
+                    element.Resources.MergedDictionaries.Add(new ResourceDictionary() { Source = new Uri($"pack://application:,,,/Markdig.Wpf;component/Themes/Light.xaml") });
+                    break;
+                case MarkdownViewerTheme.Dark:
+                    element.Resources.MergedDictionaries.Add(new ResourceDictionary() { Source = new Uri($"pack://application:,,,/Markdig.Wpf;component/Themes/Dark.xaml") });
+                    break;
+                default:
+                    element.Resources.MergedDictionaries.Add(new ResourceDictionary() { Source = new Uri($"pack://application:,,,/Markdig.Wpf;component/Themes/Dark.xaml") });
+                    break;
+            }
+        }
+
+        /// <summary>
+        /// Get the theme to display.
+        /// </summary>
+        public MarkdownViewerTheme Theme
+        {
+            get => (MarkdownViewerTheme)GetValue(ThemeProperty);
+            protected set => SetValue(ThemeProperty, value);
         }
 
         /// <summary>
@@ -79,9 +111,21 @@ namespace Markdig.Wpf
             control.RefreshDocument();
         }
 
+        private static void ThemeChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            var control = (MarkdownViewer)sender;
+            SetTheme(control.Theme, control);
+        }
+
         protected virtual void RefreshDocument()
         {
             Document = Markdown != null ? Wpf.Markdown.ToFlowDocument(Markdown, Pipeline ?? DefaultPipeline) : null;
         }
+    }
+
+    public enum MarkdownViewerTheme
+    {
+        Light,
+        Dark
     }
 }
