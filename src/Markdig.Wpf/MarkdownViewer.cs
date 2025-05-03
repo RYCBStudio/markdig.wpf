@@ -28,7 +28,7 @@ namespace Markdig.Wpf
         /// Defines the <see cref="Theme"/> property.
         /// </summary>
         public static readonly DependencyProperty ThemeProperty = 
-            DependencyProperty.Register(nameof(Theme), typeof(MarkdownViewerTheme), typeof(MarkdownViewer), new PropertyMetadata(ThemeChanged));
+            DependencyProperty.Register(nameof(Theme), typeof(string), typeof(MarkdownViewer), new PropertyMetadata(ThemeChanged));
 
         /// <summary>
         /// Defines the <see cref="Markdown"/> property.
@@ -47,14 +47,14 @@ namespace Markdig.Wpf
             DefaultStyleKeyProperty.OverrideMetadata(typeof(MarkdownViewer), new FrameworkPropertyMetadata(typeof(MarkdownViewer)));
         }
 
-        public static void SetTheme(MarkdownViewerTheme theme, FrameworkElement element)
+        public static void SetTheme(string theme, FrameworkElement element)
         {
             switch (theme)
             {
-                case MarkdownViewerTheme.Light:
+                case "light":
                     element.Resources.MergedDictionaries.Add(new ResourceDictionary() { Source = new Uri($"pack://application:,,,/Markdig.Wpf;component/Themes/Light.xaml") });
                     break;
-                case MarkdownViewerTheme.Dark:
+                case "dark":
                     element.Resources.MergedDictionaries.Add(new ResourceDictionary() { Source = new Uri($"pack://application:,,,/Markdig.Wpf;component/Themes/Dark.xaml") });
                     break;
                 default:
@@ -66,10 +66,10 @@ namespace Markdig.Wpf
         /// <summary>
         /// Get the theme to display.
         /// </summary>
-        public MarkdownViewerTheme Theme
+        public string? Theme
         {
-            get => (MarkdownViewerTheme)GetValue(ThemeProperty);
-            protected set => SetValue(ThemeProperty, value);
+            get => (string)GetValue(ThemeProperty);
+            set => SetValue(ThemeProperty, value);
         }
 
         /// <summary>
@@ -121,11 +121,5 @@ namespace Markdig.Wpf
         {
             Document = Markdown != null ? Wpf.Markdown.ToFlowDocument(Markdown, Pipeline ?? DefaultPipeline) : null;
         }
-    }
-
-    public enum MarkdownViewerTheme
-    {
-        Light,
-        Dark
     }
 }
