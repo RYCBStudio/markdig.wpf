@@ -14,8 +14,8 @@ namespace Markdig.Wpf.SampleAppCustomized.Customized
         /// </summary>
         public string UCRootPath
         {
-            get { return (string)GetValue(UCRootPathProperty); }
-            set { SetValue(UCRootPathProperty, value); }
+            get => (string)GetValue(UCRootPathProperty);
+            set => SetValue(UCRootPathProperty, value);
         }
 
         /// <summary>
